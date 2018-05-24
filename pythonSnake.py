@@ -137,7 +137,7 @@ while not quit:
     if keys[pygame.K_r]:
         restart()
 
-    if keys[pygame.K_q]:
+    if keys[pygame.K_ESCAPE]:
         break
         
     if not Alive:#freezes the game while user decides to restart or quit
@@ -207,11 +207,12 @@ while not quit:
             Alive=False
             break
 
-    win.fill((0,0,0))
-    for i in snake:
-        if i[1]:
-            pygame.draw.rect(win, (0,255,0), (i[0][0],i[0][1],20,20))
-    pygame.draw.rect(win, (255,0,0), (food[0],food[1],20,20))
+    if Alive:
+        win.fill((0,0,0))
+        for i in snake:
+            if i[1]:
+                pygame.draw.rect(win, (0,255,0), (i[0][0],i[0][1],20,20))
+        pygame.draw.rect(win, (255,0,0), (food[0],food[1],20,20))
 
     if not Alive:
         print("i ded")
