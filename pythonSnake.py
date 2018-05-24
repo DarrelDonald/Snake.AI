@@ -1,11 +1,13 @@
+#fix the movement functions
 import pygame
+import random as rand
 pygame.init()
 
 x = 5
-y = 10
+y = 12
 
 win = pygame.display.set_mode((500,500))
-pygame.draw.rect(win, (255,0,0), (20*x,20*y,20,20))
+pygame.draw.rect(win, (0,255,0), (20*x,20*y,20,20))
 
 pygame.display.set_caption("Python (Ha! See what I did there? ( ͡° ͜ʖ ͡°)")
 
@@ -13,6 +15,15 @@ lastKeyPressed_right = True
 lastKeyPressed_up = False
 lastKeyPressed_left = False
 lastKeyPressed_down = False
+
+snake = [[[0,0],False]]*625
+for i in range(1,625):
+    snake[i]=[[0,0],False]
+snake[0]=[[x*20,y*20],True]
+
+snakeLength=1
+
+food = [12*20,12*20]
 
 def newKeyPressed():
     global lastKeyPressed_right
@@ -24,6 +35,37 @@ def newKeyPressed():
     lastKeyPressed_up = False
     lastKeyPressed_left = False
     lastKeyPressed_down = False
+
+
+
+
+def placeFood():
+    global food
+    
+    food[0]=20*rand.randint(0,24)
+    food[1]=20*rand.randint(0,24)
+
+
+
+def feed():
+    global snake
+    global snakeLength
+    global food
+    samePlace=True
+
+    snake[snakeLength][1]=True
+    snakeLength+=1
+
+    while samePlace:
+        placeFood()
+        for i in range(snakeLength):
+            #print(snake[i])
+            if (snake[i][0]==food and snake[i][1]):
+                break
+            samePlace=False
+
+
+#print(snake)
 
 
 Alive = True
@@ -87,11 +129,30 @@ while Alive:
     if y>24:
         y=24
         Alive=False
+        
+    snake[0][0][0]=x*20
+    snake[0][0][1]=y*20
+
+    if snake[0][0]==food:
+        feed()
+
+    for i in range(1,snakeLength):
+        if (snake[0][0]==snake[i][0] and snake[i][1]):
+            print(snake[0],snake[1])
+            Alive=False
+            break
+
+    for i in reversed(range(1,625)):
+        snake[i][0]=snake[i-1][0]
 
     win.fill((0,0,0))
-    pygame.draw.rect(win, (255,0,0), (20*x,20*y,20,20))
+    for i in snake:
+        if i[1]:
+            pygame.draw.rect(win, (0,255,0), (i[0][0],i[0][1],20,20))
+    pygame.draw.rect(win, (255,0,0), (food[0],food[1],20,20))
 
-    
+    if not Alive:
+       print("i ded")
 
 
 
