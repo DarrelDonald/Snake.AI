@@ -125,7 +125,7 @@ quit = False
 Alive = True
 while not quit:
     pygame.display.update()
-    pygame.time.delay(200)
+    pygame.time.delay(100)
 
     for event in pygame.event.get():
 
